@@ -1,5 +1,0 @@
-include src/tree/eval/*.c
-include src/tree/eval/*.h
-graft src/tree/eval/pcg-c-*
-
-global-exclude .git* Makefile

@@ -1,2 +1,2 @@
 # ignore pcg library for code stats
-src/tree/eval/pcg-c-* linguist-vendored
+src/nrgboost/tree/eval/pcg-c-0.94/** linguist-vendored
