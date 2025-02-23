@@ -1,0 +1,2 @@
+# ignore pcg library for code stats
+src/tree/eval/pcg-c-* linguist-vendored
