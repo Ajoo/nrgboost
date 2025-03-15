@@ -8,6 +8,8 @@ from nrgboost.tree.ensemble import GenerativeBoostingTreeEstimator
 from nrgboost.tree.generative import constraints as c
 from nrgboost.dataset import Dataset, DatasetTransforms
 
+import warnings
+
 
 def train(dataset: Dataset, params: dict, seed: Optional[int] = None):
     """Trains a NRGBoost model.
@@ -112,7 +114,13 @@ class NRGBooster:
         
         return expectation
     
-    def predict(self, df, col: str = None, num_rounds: Optional[int] = None, cumulative: bool = False):
+    def predict(self, 
+        df, 
+        col: str = None, 
+        num_rounds: Optional[int] = None, 
+        normalize: bool = True, 
+        cumulative: bool = False
+        ):
         """Compute predictions for a given set of datapoints.
 
         Args:
@@ -121,6 +129,7 @@ class NRGBooster:
                 Will ignore values of col in df. Defaults to None.
             num_rounds (int, optional): Includes only the first num_rounds trees in prediction. 
                 Defaults to None which uses all trees.
+            normalize (bool, optional): Whether to normalize 
             cumulative (bool, optional): If True returns an iterator over predictions at different
                 num_rounds. Defaults to False.
 
@@ -134,11 +143,25 @@ class NRGBooster:
         data = self.transform(df)
         
         slice_dims = [] if col is None else [self.transform.col_number(col)]
-        preds = self.booster.predict(data, slice_dims=slice_dims, stop=num_rounds, cumulative=cumulative)
+        is_numerical = col is not None and self.booster.domain.ordered[slice_dims[0]]
+        if is_numerical and not normalize:
+            warnings.warn(
+                "Called predict with normalize=False for a numerical column. "
+                "This setting will be ignored."
+            )
+            normalize = True
+            
+        preds = self.booster.predict(
+            data, 
+            slice_dims=slice_dims, 
+            stop=num_rounds, 
+            cumulative=cumulative, 
+            normalize=normalize
+            )
         
         # if no slice dim or is categorical return preds
-        if col is None or not self.booster.domain.ordered[slice_dims[0]]: 
-            return preds
+        if not is_numerical: 
+            return preds            
             
         # for numericals, compute the expected value for predicted distribution
         # TODO: support other types of numerical prediction (e.g., median)
