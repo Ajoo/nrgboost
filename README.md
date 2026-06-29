@@ -1,17 +1,13 @@
-# 🔋 NRGBoost: Energy-Based Generative Boosted Trees 🌳
+# NRGBoost: Energy-Based Generative Boosted Trees 🔋🌳
 
 This repository contains the official code of the paper [NRGBoost: Energy-Based Generative Boosted Trees](https://arxiv.org/abs/2410.03535) (ICLR 2025).
 
-<div>
+<div align="center">
 
 ![NRGBoost diagram](diagram.svg)
 
-<center>
-Overview of a NRGBoost training iteration.
-</center>
-
+<p><i>Overview of an NRGBoost training iteration.</i></p>
 </div>
-
 
 ## Installation
 
@@ -19,6 +15,16 @@ To install the latest version of the python package run:
 
 ```shell
 pip install nrgboost
+```
+
+**Note:** Prebuilt wheels are now available for Linux and macOS. Windows is not supported for now.
+
+### Building from source
+
+To install from a source distribution you need a C compiler with OpenMP. On macOS, install Homebrew's `libomp` first:
+
+```shell
+brew install libomp
 ```
 
 ## NRGBoost Models
@@ -76,21 +82,21 @@ best_round = np.argmax(val_r2)
 
 #%% Compute test R^2 using only the first `best_round` trees
 test_preds = model.predict(test_df, y.name, num_rounds=best_round)
-test_r2 = r2_score(test_df[target_col], test_preds)
+test_r2 = r2_score(test_df[y.name], test_preds)
 print('Test R^2:', test_r2)
 ```
 
 **Note:** For numerical columns, NRGBoost currently predicts the expected value according to it's learned distribution. In the future we plan to make this more flexible so that the user can select a different point estimate (e.g., median or another quantile) or have access to the full distribution.
 
 For categorical columns, NRGBoost will output logits for each possible outcome. The prediction will be an array with shape (N, K) where N is the number of points and K the cardinality of the column. The orders of each logit are determined by the pandas `codes` for each possible value.
-The output logits are already normalized so they can be converted to probabilities simply by exponentiation (i.e., no need to apply softmax).
+By default, the output logits are already normalized so they can be converted to probabilities directly by exponentiation (i.e., there is no need to apply softmax since their partition function is already normalized to 1).
 
 ### Sampling
 
-To draw 500 samples from the model we can run:
+To draw 500 samples from the model using only the first `best_round` trees run:
 
 ```python
-samples_df = model.sample(500, num_steps=100)
+samples_df = model.sample(500, num_steps=100, num_rounds=best_round)
 ```
 
 `num_steps` is the number of Gibbs sampling steps that are used to generate each individual sample. It allows the user to trade-off computation time (which scales linearly in `num_steps`) for bias in the generated samples.
@@ -116,12 +122,11 @@ model = NRGBooster.load('filename')
 You can cite NRGBoost as:
 
 ```latex
-@misc{bravo2024nrgboost,
-      title={NRGBoost: Energy-Based Generative Boosted Trees}, 
-      author={João Bravo},
-      year={2024},
-      eprint={2410.03535},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
+@inproceedings{bravo2025nrgboost,
+    title={{NRGB}oost: Energy-Based Generative Boosted Trees},
+    author={Jo{\~a}o Bravo},
+    booktitle={The Thirteenth International Conference on Learning Representations},
+    year={2025},
+    url={https://openreview.net/forum?id=wQHyjIZ1SH}
 }
 ```
