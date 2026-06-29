@@ -17,7 +17,7 @@ To install the latest version of the python package run:
 pip install nrgboost
 ```
 
-**Note:** Prebuilt wheels are now available for Linux and macOS. Windows is not supported for now.
+**Note:** Requires python 3.10+. Prebuilt wheels are now available for Linux and macOS. Windows is not supported for now.
 
 ### Building from source
 
