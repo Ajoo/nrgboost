@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61", "wheel", "cffi>=1"]
+build-backend = "setuptools.build_meta"
+
+# Project metadata still lives in setup.py. This file only adds the PEP 517 build backend
+# and the cibuildwheel configuration.
+
+[tool.cibuildwheel]
+# The PCG RNG needs 128-bit integers (no MSVC support), 
+# so we target CPython on Linux + macOS.
+build = "cp39-* cp310-* cp311-* cp312-*"
+skip = "*-musllinux* pp* *_i686"
+build-frontend = "build"
+test-command = 'python -c "import nrgboost; from nrgboost.tree import eval"'
+
+[tool.cibuildwheel.macos]
+# Apple Clang needs Homebrew's libomp for OpenMP; delocate then bundles the
+# dylib into the wheel so installs require no system dependencies.
+before-all = "brew install libomp"
