@@ -17,7 +17,7 @@ To install the latest version of the python package run:
 pip install nrgboost
 ```
 
-Prebuilt wheels are available for Linux and macOS. Windows is not supported for now.
+**Note:** Prebuilt wheels are now available for Linux and macOS. Windows is not supported for now.
 
 ### Building from source
 
@@ -25,7 +25,6 @@ To install from a source distribution you need a C compiler with OpenMP. On macO
 
 ```shell
 brew install libomp
-pip install nrgboost
 ```
 
 ## NRGBoost Models
@@ -90,7 +89,7 @@ print('Test R^2:', test_r2)
 **Note:** For numerical columns, NRGBoost currently predicts the expected value according to it's learned distribution. In the future we plan to make this more flexible so that the user can select a different point estimate (e.g., median or another quantile) or have access to the full distribution.
 
 For categorical columns, NRGBoost will output logits for each possible outcome. The prediction will be an array with shape (N, K) where N is the number of points and K the cardinality of the column. The orders of each logit are determined by the pandas `codes` for each possible value.
-By default, the output logits are already normalized so they can be converted to probabilities directly by exponentiation (i.e., no need to apply softmax since their partition function is already set to 1).
+By default, the output logits are already normalized so they can be converted to probabilities directly by exponentiation (i.e., there is no need to apply softmax since their partition function is already normalized to 1).
 
 ### Sampling
 
@@ -123,12 +122,11 @@ model = NRGBooster.load('filename')
 You can cite NRGBoost as:
 
 ```latex
-@misc{bravo2024nrgboost,
-      title={NRGBoost: Energy-Based Generative Boosted Trees}, 
-      author={João Bravo},
-      year={2024},
-      eprint={2410.03535},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
+@inproceedings{bravo2025nrgboost,
+    title={{NRGB}oost: Energy-Based Generative Boosted Trees},
+    author={Jo{\~a}o Bravo},
+    booktitle={The Thirteenth International Conference on Learning Representations},
+    year={2025},
+    url={https://openreview.net/forum?id=wQHyjIZ1SH}
 }
 ```

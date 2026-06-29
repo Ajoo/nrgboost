@@ -19,7 +19,7 @@ Github: https://github.com/ajoo/nrgboost
 
 setup(
     name='nrgboost',
-    version='0.0.2',
+    version='0.0.3',
     description='Official NRGBoost implementation',
     author='João Bravo',
     url='https://github.com/ajoo/nrgboost',
