@@ -15,8 +15,6 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest      # manylinux x86_64
-          - os: macos-15-intel     # Intel x86_64 (macos-13 retired Dec 2025)
-            macos_target: "15.0"
           - os: macos-14           # Apple Silicon arm64
             macos_target: "14.0"
     steps:
