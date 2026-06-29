@@ -25,6 +25,7 @@ setup(
     url='https://github.com/ajoo/nrgboost',
     packages=find_packages(where='src'), #['nrgboost', 'nrgboost.tree', 'nrgboost.tree.eval'],
     package_dir={'': 'src'},
+    python_requires='>=3.10',  # uses dataclass(slots=True), added in 3.10
     install_requires=[
         'cffi>=1',
         'numpy',
