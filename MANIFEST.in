@@ -1,0 +1,4 @@
+include README.md LICENSE
+recursive-include src/nrgboost/tree/eval *.c *.h
+global-exclude *.so *.pyd
+prune src/nrgboost/tree/eval/__pycache__

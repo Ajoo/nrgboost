@@ -17,6 +17,17 @@ To install the latest version of the python package run:
 pip install nrgboost
 ```
 
+Prebuilt wheels are available for Linux and macOS. Windows is not supported for now.
+
+### Building from source
+
+To install from a source distribution you need a C compiler with OpenMP. On macOS, install Homebrew's `libomp` first:
+
+```shell
+brew install libomp
+pip install nrgboost
+```
+
 ## NRGBoost Models
 
 The following example shows how to train a NRGBoost model on the California Housing dataset:
